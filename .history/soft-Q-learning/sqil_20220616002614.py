@@ -96,7 +96,7 @@ if __name__ == "__main__":
     UPDATE_STEPS = 4
 
     expert_memory_replay = Memory(REPLAY_MEMORY//2)
-    expert_memory_replay.load('/home/richard/Codes/football/sqil/soft-Q-learning/expert_replay')
+    expert_memory_replay.load('e/home/richard/Codes/football/sqil/soft-Q-learning/expert_replay')
     online_memory_replay = Memory(REPLAY_MEMORY//2)
     writer = SummaryWriter('logs/sqil')
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                writer.add_scalar('loss', loss.item(), global_step=learn_steps)
+                # writer.add_scalar('loss', loss.item(), global_step=learn_steps)
             
             if done:
                 break

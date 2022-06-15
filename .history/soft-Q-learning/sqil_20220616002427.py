@@ -83,7 +83,7 @@ class SoftQNetwork(nn.Module):
         return a.item()
 
 if __name__ == "__main__":
-    env = gym.make('CartPole-v1')
+    env = gym.make('CartPole-v0')
     onlineQNetwork = SoftQNetwork().to(device)
     targetQNetwork = SoftQNetwork().to(device)
     targetQNetwork.load_state_dict(onlineQNetwork.state_dict())
@@ -96,9 +96,9 @@ if __name__ == "__main__":
     UPDATE_STEPS = 4
 
     expert_memory_replay = Memory(REPLAY_MEMORY//2)
-    expert_memory_replay.load('/home/richard/Codes/football/sqil/soft-Q-learning/expert_replay')
+    expert_memory_replay.load('expert_replay')
     online_memory_replay = Memory(REPLAY_MEMORY//2)
-    writer = SummaryWriter('logs/sqil')
+    # writer = SummaryWriter('logs/sqil')
 
     learn_steps = 0
     begin_learn = False
@@ -154,7 +154,7 @@ if __name__ == "__main__":
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                writer.add_scalar('loss', loss.item(), global_step=learn_steps)
+                # writer.add_scalar('loss', loss.item(), global_step=learn_steps)
             
             if done:
                 break

@@ -154,7 +154,7 @@ if __name__ == "__main__":
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                writer.add_scalar('loss', loss.item(), global_step=learn_steps)
+                # writer.add_scalar('loss', loss.item(), global_step=learn_steps)
             
             if done:
                 break

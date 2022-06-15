@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from itertools import count
 from collections import deque
 import random
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
 from torch.distributions import Categorical
 import gym
 import numpy as np
@@ -83,7 +83,7 @@ class SoftQNetwork(nn.Module):
         return a.item()
 
 if __name__ == "__main__":
-    env = gym.make('CartPole-v1')
+    env = gym.make('CartPole-v0')
     onlineQNetwork = SoftQNetwork().to(device)
     targetQNetwork = SoftQNetwork().to(device)
     targetQNetwork.load_state_dict(onlineQNetwork.state_dict())
@@ -96,9 +96,9 @@ if __name__ == "__main__":
     UPDATE_STEPS = 4
 
     expert_memory_replay = Memory(REPLAY_MEMORY//2)
-    expert_memory_replay.load('/home/richard/Codes/football/sqil/soft-Q-learning/expert_replay')
+    expert_memory_replay.load('expert_replay')
     online_memory_replay = Memory(REPLAY_MEMORY//2)
-    writer = SummaryWriter('logs/sqil')
+    # writer = SummaryWriter('logs/sqil')
 
     learn_steps = 0
     begin_learn = False
@@ -154,13 +154,13 @@ if __name__ == "__main__":
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                writer.add_scalar('loss', loss.item(), global_step=learn_steps)
+                # writer.add_scalar('loss', loss.item(), global_step=learn_steps)
             
             if done:
                 break
             
             state = next_state
-            writer.add_scalar('episode reward', episode_reward, global_step=epoch)
+        writer.add_scalar('episode reward', episode_reward, global_step=epoch)
         if epoch % 10 == 0:
             torch.save(onlineQNetwork.state_dict(), 'sqil-policy.para')
             print('Ep {}\tMoving average score: {:.2f}\t'.format(epoch, episode_reward))
